@@ -1,25 +1,22 @@
- var phyloTree;
+window.d3Tree = {
+    visit: function(parent, visitFn, childrenFn)
+    {
+        if (!parent) return;
 
-function visit(parent, visitFn, childrenFn)
-{
-    if (!parent) return;
+        visitFn(parent);
 
-    visitFn(parent);
-
-    var children = childrenFn ? childrenFn(parent) : parent.children;
-    if (children) {
-        var count = children.length;
-        for (var i = 0; i < count; i++) {
-            visit(children[i], visitFn, childrenFn);
+        var children = childrenFn ? childrenFn(parent) : parent.children;
+        if (children) {
+            var count = children.length;
+            for (var i = 0; i < count; i++) {
+                this.visit(children[i], visitFn, childrenFn);
+            }
         }
-    }
-}
-
-var d3Tree = {
+    },
     d3Tree: function(containerName, customOptions)
 {
     // build the options object
-     var options = $.extend({
+     var options = dojo.mixin({
         iNodeRadius: 3, tipNodeRadius: 3, fontSize: 12, phylogram:true, supportCutoff:100,
     }, customOptions);
 
@@ -45,7 +42,7 @@ var d3Tree = {
     console.log(colorSpecies + ", " + colorGenus);
     // size of the diagram
     var canvasHeight = leafCount * heightPerLeaf + topMargin;
-    var size = { width:$(containerName).outerWidth(), height: canvasHeight};
+    var size = { width:dojo.position(dojo.query(containerName)[0]).w, height: canvasHeight};
     
     this.setTree = function(treeString) { 
                phyloTree = new PhyloTree.PhyloTree(treeString);
@@ -53,7 +50,7 @@ var d3Tree = {
 
         leafCount = phyloTree.getLeafCount();
         maxNodeDepth = treeData.cx;
-        visit(treeData, function(d)
+        d3Tree.visit(treeData, function(d)
         {
             totalNodes++;
             if(d.n) {
@@ -66,7 +63,7 @@ var d3Tree = {
             return d.c && d.c.length > 0 ? d.c : null;
         });
         canvasHeight = leafCount * heightPerLeaf + topMargin;
-        size = { width:$(containerName).outerWidth(), height: canvasHeight};
+        size = { width:dojo.position(dojo.query(containerName)[0]).w, height: canvasHeight};
 
         tree = d3.layout.tree()
             .sort(null)
@@ -175,7 +172,7 @@ var d3Tree = {
 
     function hover(d) {
         d = d.target ? d.target : d;
-        visit(d, function(d){
+        d3Tree.visit(d, function(d){
             d.hover = true;
         });
 
@@ -184,7 +181,7 @@ var d3Tree = {
 
     function mouseout(d) {
         d = d.target ? d.target : d;
-        visit(d, function(d){
+        d3Tree.visit(d, function(d){
             d.hover = false;
         });
         update();
@@ -202,7 +199,7 @@ var d3Tree = {
         if(!keepSelections) {
             clearSelections();
         }
-        visit(d, function(d){
+        d3Tree.visit(d, function(d){
             d.selected = toggleTo;
         });
         update();

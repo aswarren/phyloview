@@ -1,4 +1,4 @@
-var PhyloTree = {
+window.PhyloTree = {
 
     PhyloTree: function(treeString) {
         //console.log("new PhyloTree for: " + treeString);
@@ -50,7 +50,7 @@ var PhyloTree = {
 
         function newickToJSON(nwk) {
             var commaProtect = "&&";
-            nwk = nwk.replace(/;/, "")
+            nwk = nwk.replace(/;/, "}")
                 .replace(/^\(/, "{c:[{")
                 .replace(/\)$/g, "}]}")
                 .replace(/,([\w+\.\/-]+)/g, ",n:'$1'")
