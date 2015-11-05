@@ -48,22 +48,67 @@ window.PhyloTree = {
             }
         }
 
+        function newickToJSON_biojs (s) {
+            var ancestors = [];
+            var tree = {};
+            var tokens = s.split(/\s*(;|\(|\)|,|:)\s*/);
+            for (var i=0; i<tokens.length; i++) {
+                var token = tokens[i];
+                switch (token) {
+                    case '(': // new children
+                        var subtree = {};
+                        tree.c = [subtree];
+                        ancestors.push(tree);
+                        tree = subtree;
+                        break;
+                    case ',': // another branch
+                        var subtree = {};
+                        ancestors[ancestors.length-1].c.push(subtree);
+                        tree = subtree;
+                        break;
+                    case ')': // optional name next
+                        tree = ancestors.pop();
+                        break;
+                    case ':': // optional length next
+                        break;
+                    default:
+                        var x = tokens[i-1];
+                        if (x == ')' || x == '(' || x == ',') {
+                            tree.s = parseInt(token);
+                        } else if (x == ':') {
+                            tree.l = parseFloat(token);
+                        }
+                }
+            }
+            finalizeTree(tree);
+            return tree;
+        }
+
         function newickToJSON(nwk) {
             var commaProtect = "&&";
+            nwk=nwk.trim();
+            if(nwk.substr(-1) != ";"){
+                nwk=nwk+";";
+            }
             nwk = nwk.replace(/;/, "}")
-                .replace(/^\(/, "{c:[{")
+                .replace(/\=/g,"")
+                .replace(/\'/g,"")
+                .replace(/\#/g,"")
                 .replace(/\)$/g, "}]}")
-                .replace(/,([\w+\.\/-]+)/g, ",n:'$1'")
-                .replace(/\(([\w+\.\/-]+)/g, "\(n:'$1'")
-                .replace(/:(\d+)/g, commaProtect + "l:$1")
-                .replace(/\)(\d*)/g, ")" + commaProtect + "s:$1")
-                .replace(/&&s:&&/g, "&&s:0&&")
-                .replace(/\(/g, "c:[{")
+                .replace(/,([\w+\.\/-]+)/g, ",\"n\":\"$1\"")
+                .replace(/\(([\w+\.\/-]+)/g, "\(\"n\":\"$1\"")
+                .replace(/^\(/, "{\"c\":[{")
+                .replace(/:([-+]?[0-9]*\.?[0-9]+)/g, commaProtect + "\"l\":$1")
+                .replace(/\)(\d*)/g, ")" + commaProtect + "\"s\":$1")
+                .replace(/&&\"s\":&&/g, "&&\"s\":0&&")
+                .replace(/\(/g, "\"c\":[{")
                 .replace(/\)/g, "}]")
                 .replace(/,/g, "},{")
+                .replace(/\"s\":\}/,"\"s\":0}")
                 .replace(/&&/g, ",");
+    //            .replace(/^\{\"c\"\:\[\{([\w+\.\/-]+)/,"{\"c\":[{\"n\":\"$1\"");
             console.log("tree json string: " + nwk);
-            var r = eval("("+nwk+")");
+            var r = JSON.parse(nwk);
             finalizeTree(r);
             return r;
         }
