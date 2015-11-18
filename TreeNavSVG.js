@@ -81,6 +81,7 @@ window.d3Tree = {
         </svg>
      */
         svgContainer = d3.select(containerName)
+        .html("")
         .append("svg:svg").attr("width", size.width).attr("height", size.height)
         .append("svg:g")
         .attr("class", "container")
