@@ -1,4 +1,13 @@
-window.d3Tree = {
+
+define([
+	"dojo/_base/declare", "dijit/_WidgetBase",
+	"dojo/dom-construct","dojo/_base/lang", "dojo/request","dojo/dom-style", 
+],function(
+	declare,WidgetBase,
+	domConstruct,lang,request,domStyle
+){
+
+    return declare([WidgetBase], {
     visit: function(parent, visitFn, childrenFn)
     {
         if (!parent) return;
@@ -50,7 +59,7 @@ window.d3Tree = {
 
         leafCount = phyloTree.getLeafCount();
         maxNodeDepth = treeData.cx;
-        d3Tree.visit(treeData, function(d)
+        this.visit(treeData, function(d)
         {
             totalNodes++;
             if(d.n) {
@@ -73,7 +82,7 @@ window.d3Tree = {
                 return (!d.c || d.c.length === 0) ? null : d.c;
             });
 
-        tipToColors  = getTipColors(colorGenus, colorSpecies);
+        tipToColors  = this.getTipColors(colorGenus, colorSpecies);
 
     /*
         <svg>
@@ -173,7 +182,7 @@ window.d3Tree = {
 
     function hover(d) {
         d = d.target ? d.target : d;
-        d3Tree.visit(d, function(d){
+        this.visit(d, function(d){
             d.hover = true;
         });
 
@@ -182,7 +191,7 @@ window.d3Tree = {
 
     function mouseout(d) {
         d = d.target ? d.target : d;
-        d3Tree.visit(d, function(d){
+        this.visit(d, function(d){
             d.hover = false;
         });
         update();
@@ -200,7 +209,7 @@ window.d3Tree = {
         if(!keepSelections) {
             clearSelections();
         }
-        d3Tree.visit(d, function(d){
+        this.visit(d, function(d){
             d.selected = toggleTo;
         });
         update();
@@ -686,11 +695,9 @@ window.d3Tree = {
         });
 
 
-}
-}
-}
-
-        function getRGBRainbow(n, offset) {
+        }
+    },
+    getRGBRainbow: function(n, offset) {
                 var r;
                 var rainbowLength;
                 var fullRainbow = new Array();
@@ -742,9 +749,9 @@ window.d3Tree = {
                 }
                 
                 return r;
-        }
+        },
 
-        function getGenusSpeciesSets(minToInclude) {
+        getGenusSpeciesSets: function(minToInclude) {
                 var genusSets = new Array();
                 var genusToSpecies = new Array();
                 var genusToSpeciesSeen = new Array();
@@ -809,16 +816,16 @@ window.d3Tree = {
                 }
                 
                 return [uniqueList, genusToSpecies];
-        }
+        },
                 
 
-        function getTipColors(colorGenus, colorSpecies) {
+        getTipColors: function(colorGenus, colorSpecies) {
                 var colorTips = colorGenus | colorSpecies;
-                var genusSets = getGenusSpeciesSets(2);
+                var genusSets = this.getGenusSpeciesSets(2);
                 var commonGenera = genusSets[0];
                 var genusToSpecies = genusSets[1];
                  
-                var rainbow = getRGBRainbow(commonGenera.length, 21);
+                var rainbow = this.getRGBRainbow(commonGenera.length, 21);
                 var speciesToColor = new Array();
                  
                 var length = Math.min(commonGenera.length, rainbow.length);
@@ -828,7 +835,7 @@ window.d3Tree = {
                                 var genusColor =
                                         getColorHex(rainbow[i][0], rainbow[i][1], rainbow[i][2]);
                                 var speciesInGenus = genusToSpecies[commonGenera[i]];
-                                var speciesRainbow = getRGBRainbow(speciesInGenus.length+1, 16);
+                                var speciesRainbow = this.getRGBRainbow(speciesInGenus.length+1, 16);
                                 var sLength = speciesInGenus.length;
                                 var sColorIndex = 0;
                                 for(var j = 0; j < sLength; j++) {
@@ -873,12 +880,12 @@ window.d3Tree = {
                         }
                 }
              return speciesToColor;
-        }
+        },
 
         /**
          * Converts integer R, G, and B values to hex color strings.
          */
-        getColorHex = function(r, g, b) {
+        getColorHex : function(r, g, b) {
             var hexCodes = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D",
                         "E","F"];
                 //get values for r
@@ -900,4 +907,7 @@ window.d3Tree = {
                 return hex;
         }
                 
+    });
+});
+
 
