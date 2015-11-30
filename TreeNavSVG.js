@@ -844,19 +844,19 @@ define([
                 if(colorTips) {
                         for(var i = 0; i < length; i++ ) {
                                 var genusColor =
-                                        getColorHex(rainbow[i][0], rainbow[i][1], rainbow[i][2]);
+                                        this.getColorHex(rainbow[i][0], rainbow[i][1], rainbow[i][2]);
                                 var speciesInGenus = genusToSpecies[commonGenera[i]];
                                 var speciesRainbow = this.getRGBRainbow(speciesInGenus.length+1, 16);
                                 var sLength = speciesInGenus.length;
                                 var sColorIndex = 0;
                                 for(var j = 0; j < sLength; j++) {
                                         var speciesColor =
-                                                getColorHex(speciesRainbow[sColorIndex][0],
+                                                this.getColorHex(speciesRainbow[sColorIndex][0],
                                                                 speciesRainbow[sColorIndex][1], speciesRainbow[sColorIndex][2]);
                                         if(speciesColor == genusColor) {
                                                 sColorIndex++;
                                                 speciesColor =
-                                                        getColorHex(speciesRainbow[sColorIndex][0],
+                                                        this.getColorHex(speciesRainbow[sColorIndex][0],
                                                                         speciesRainbow[sColorIndex][1], speciesRainbow[sColorIndex][2]);
                                         }
                                         sColorIndex++;
@@ -870,7 +870,7 @@ define([
                 } else {   
                         for(var i = 0; i < length; i++ ) {
                                 var speciesInGenus = genusToSpecies[commonGenera[i]];
-                                var genusColor = getColorHex(rainbow[i][0], rainbow[i][1], rainbow[i][2]);
+                                var genusColor = this.getColorHex(rainbow[i][0], rainbow[i][1], rainbow[i][2]);
                                 var sLength = speciesInGenus.length;
                                 for(var j = 0; j < sLength; j++) {
                                         speciesToColor[speciesInGenus[j]] = genusColor;
