@@ -159,7 +159,7 @@ define([
             if(d.selected && !d.c) {
                 this.selected.push(d);
             }
-        });
+        },this);
         return this.selected;
     },
 
