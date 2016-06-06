@@ -21,6 +21,7 @@ define([
     tipLinkPrefix : "http://www.google.com/search?q:",
     tipLinkSuffix : "",
     fontWidthForMargin : null,
+    selectionTarget: null,
     containerName: null,
     tipToColors  : null,
     treeData : null,
@@ -160,7 +161,9 @@ define([
                 this.selected.push(d);
             }
         },this);
-        return this.selected;
+        if (this.selectionTarget != null){
+            this.selectionTarget.set("selection",this.selected);
+        }
     },
 
     clearSelections : function() {
