@@ -132,7 +132,12 @@ define([
 
     selectLabels: function(labelAlias){
         if (labelAlias in this.labelLabels){
-            this.set('labelIndex', this.labelLabels[labelAlias]);
+            var labelIndex = this.labelLabels[labelAlias];
+            this.maxLabelLength = 10;
+            Object.keys(this.treeData.labels[labelIndex]).forEach(lang.hitch(this, function(leafID){
+                this.maxLabelLength = Math.max(this.treeData.labels[labelIndex][leafID].length, this.maxLabelLength);
+            }));
+            this.set('labelIndex', labelIndex);
         }
     },
 
