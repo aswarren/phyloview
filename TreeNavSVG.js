@@ -165,6 +165,7 @@ define([
     },
 
     getSelectedItems : function() {
+            this.selected =[];
             this.tree.nodes(this.treeData).forEach(lang.hitch(this, function(d){
             if(d.selected && !d.c) {
                 this.selected.push(d);
