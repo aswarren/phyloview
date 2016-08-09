@@ -26,7 +26,7 @@ define([
     tipToColors  : null,
     treeData : null,
     labelIndex: 0,
-    labelLabels: {"PATRIC ID":0},
+    labelLabels: {"Default ID":0},
     tree : null,
     selected: [],
     svgContainer : null, 
