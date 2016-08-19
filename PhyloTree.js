@@ -197,7 +197,7 @@ window.PhyloTree = {
                         node.c.forEach(function(child){
                             child.parent = node;
                             if(child.l || child.l == 0) {
-                                child.px = node.px + child.l + .012;
+                                child.px = node.px + child.l + .02;
                             }
                         });
 
