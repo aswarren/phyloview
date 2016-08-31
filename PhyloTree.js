@@ -190,7 +190,7 @@ window.PhyloTree = {
                             return b.d - a.d;
                         });                        
                     } else {
-                        node.label = tmp_label.join(" ");
+                        node.label = node.n;
                         tree.labels[0][node.id]=node.label;
                         leafCount++;
                         node.ti = tipIndex++;
