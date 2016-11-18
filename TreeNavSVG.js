@@ -66,6 +66,7 @@ define([
     this.colorSpecies = customOptions.colorSpecies;
     this.colorGenus = customOptions.colorGenus;
     this.containerName=containerName;
+    this.idToHeight={};
 
     // Calculate total nodes, max label length
 
@@ -112,6 +113,7 @@ define([
             .size([size.height, size.width - this.maxLabelLength*this.fontWidthForMargin])
             .children(function(d)
             {
+                this.idToHeight[d.id]=d.py;
                 return (!d.c || d.c.length === 0) ? null : d.c;
             });
 
