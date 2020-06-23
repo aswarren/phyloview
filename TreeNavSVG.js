@@ -78,7 +78,7 @@ define([
     this.margin = {top: 10, right: 10, bottom: 10, left: 10};
     
     },
-    setTree : function(treeString, idType, labelsInit, labelAliasInit) {
+    setTree : function(treeString, labelsInit, labelAliasInit, idType) {
         _self=this;
         labelsInit = typeof labelsInit !== 'undefined' ? labelsInit : null;
         labelAliasInit = typeof labelAliasInit !== 'undefined' ? labelAliasInit : null;
