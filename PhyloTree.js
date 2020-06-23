@@ -100,7 +100,7 @@ window.PhyloTree = {
                 .replace(/\'/g,"")
                 .replace(/\#/g,"")
                 .replace(/\)$/g, "}]}");
-            if (idType == "genome_id" || idType == undefined) {
+            if (idType == "genome_id" || idType == undefined || idType == null) {
         	nwk = nwk.replace(/,([\w+\|\.\/-]+)/g, ",\"n\":\"$1\"")
                 .replace(/\(([\w+\|\.\/-]+)/g, "\(\"n\":\"$1\"");
             } else {
