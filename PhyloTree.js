@@ -26,7 +26,7 @@ window.PhyloTree = {
 
         this.getTipLabels = function() {
             var tipLabels = new Array();
-            visit(this.getJSONTree(), function(node) { 
+            visit(this.getJSONTree(), function(node) {
                 if(!node.c || node.c.length == 0) {
                     tipLabels.push(node.n);
                 }
@@ -36,9 +36,9 @@ window.PhyloTree = {
 
         function visit(parent, visitFn, childrenFn) {
             if (!parent) return;
-  
+
             visitFn(parent);
- 
+
             var children = childrenFn ? childrenFn(parent) : parent.c;
             if (children) {
                 var count = children.length;
@@ -83,11 +83,11 @@ window.PhyloTree = {
             finalizeTree(tree);
             return tree;
         }
-        
+
         function replacer(match, p1, offset, string) {
             return "\"n\":" + p1.replace(/\(|\{|\[/, "l*").replace(/\)|\}|\]/, "r*");
           }
-        
+
         function newickToJSON(nwk, idType) {
             var commaProtect = "&&";
             nwk=nwk.trim();
@@ -101,8 +101,8 @@ window.PhyloTree = {
                 .replace(/\#/g,"")
                 .replace(/\)$/g, "}]}");
             if (idType == "genome_id" || idType == "patric_id" || idType == undefined || idType == null) {
-        	nwk = nwk.replace(/,([\w+\|\.\/-]+)/g, ",\"n\":\"$1\"")
-                .replace(/\(([\w+\|\.\/-]+)/g, "\(\"n\":\"$1\"");
+                nwk = nwk.replace(/,([\w+\|\.\/\[\]-]+)/g, ",\"n\":\"$1\"")
+                  .replace(/\(([\w+\|\.\/\[\]-]+)/g, "\(\"n\":\"$1\"");
             } else {
         	nwk = nwk.replace(/(\"[^\"]+\")/g, replacer);
             }
@@ -178,7 +178,7 @@ window.PhyloTree = {
             countNodeDescendants(tree);
             var nodeId = 0;
             tree.px = 0;
-            visit(tree,                                                                                               
+            visit(tree,
                 function(node){
                     var tmp_label=[];
                     if(!node.c && node.n) {
@@ -199,7 +199,7 @@ window.PhyloTree = {
 
                         node.c.sort(function(a,b){
                             return b.d - a.d;
-                        });                        
+                        });
                     } else {
                         node.label = node.n;
                         tree.labels[0][node.id]=node.label;
