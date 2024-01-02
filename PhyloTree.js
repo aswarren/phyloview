@@ -95,6 +95,7 @@ window.PhyloTree = {
                 nwk=nwk+";";
             }
             console.log("Initial tree json string: " + nwk);
+            nwk = nwk.replace(/\);:/, "):")
             nwk = nwk.replace(/;/, "}")
                 .replace(/\=/g,"")
                 .replace(/\'/g,"")
